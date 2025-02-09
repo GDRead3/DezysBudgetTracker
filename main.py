@@ -18,7 +18,7 @@ def main():
             view_expenses(expenses)
         
         elif choice == "3":
-            print("Thank you for using the Expense Tracker!")
+            print("Thank you for using the Dezy's Budget Tracker!")
             break
         
         else:
