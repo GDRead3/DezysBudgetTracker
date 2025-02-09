@@ -37,3 +37,10 @@ class expense:
                 "amount": self.amount,
                 "category": self.category
             }
+
+
+#test:
+# Example usage:
+#expense_test = expense("2025-02-08", 25.50, "food")
+#print(expense_test.amount)  # Prints: 25.50
+#print(expense_test.category)  # Prints: food
