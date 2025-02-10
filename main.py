@@ -11,8 +11,12 @@ def main():
         
         if choice == "1":
             expense = add_new_expense()
-            expenses.append(expense)
-            print("Expense added successfully!")
+            #if expense is not None, add it to the list
+            if expense:
+                expenses.append(expense)
+                print("Expense added successfully!")
+            else:
+                print("Expense addition cancelled.")
         
         elif choice == "2":
             view_expenses(expenses)
