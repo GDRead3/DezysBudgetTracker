@@ -8,14 +8,24 @@ def view_expenses(expenses):
     
     # Print header for our expense table
     print("\nYour Expenses:")
-    print("Date\t\tAmount\t\tCategory")
-    print("-" * 40)  # Print a dividing line
+    print("Index ID\t\tDate\t\tAmount\t\tCategory")
+    print("-" * 80)  # Print a dividing line
     
     # Loop through each expense and print it nicely formatted
+    index=0
     for expense in expenses:
-        print(f"{expense.date}\t${expense.amount:.2f}\t\t{expense.category}")
+        print(f"{index}\t\t\t{expense.date}\t${expense.amount:.2f}\t\t{expense.category}")
+        index += 1
         # The :.2f means "show 2 decimal places"
+
+    print ("\nTotal expenses: ${:.2f}".format(sum(expense.amount for expense in expenses)))
 
 def add_new_expense():
     # This just uses our Expense class's from_user_input method
     return Expense.from_user_input()
+
+def delete_expense(expenses, expense_index):
+    # This just uses our Expense class's from_user_input method
+    return expenses.pop(expense_index)
+
+
