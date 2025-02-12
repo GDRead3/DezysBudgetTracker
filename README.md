@@ -44,14 +44,18 @@ A Python-based personal finance application that helps users track their expense
 2. Follow the on-screen menu to:
    - Add new expenses
    - View existing expenses
+   - Delete expenses
+   - enter budget management
    - Exit the application
+   and more...
 
 ## Project Structure
 
 ```
 ├── expense.py       # Expense class and validation functions
-├── main.py        # Main application logic
-├── operations.py  # Additional operations for managing expenses
+├── main.py          # Main application logic
+├── operations.py    # Additional operations for managing expenses
+├── storage.py       # Storage functions for the program
 ├── README.md        # Project documentation
 ```
 
@@ -67,7 +71,7 @@ The application includes comprehensive error handling for:
 ## To-Do List
 
 - [ ] Add monthly budget setting
-- [ ] Add Storage system for expenses
+- [x] Add Storage system for expenses
 - [ ] Add budget managment settings
 - [ ] Implement expense categories management
 - [ ] Add data visualization (graphs/charts)
