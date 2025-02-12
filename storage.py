@@ -2,10 +2,10 @@ import json
 from datetime import datetime
 from expense import Expense
 
-#saving an expense object to a JSON file
+#saving a list of expense objects to a JSON file
 def save_expenses(expenses, filename="expenses.json"):
     #uses the "to_dict" function from the Expense class to convert the data into a list for the JSON file
-    expense_data = [expenses.to_dict() for expense in expenses]
+    expense_data = [expense.to_dict() for expense in expenses]
 
     #write the JSON file
 
@@ -27,7 +27,7 @@ def load_expenses(filename="expenses.json"):
             )
             expenses.append(expense)
         
-        return
+        return expenses
     
     except FileNotFoundError:
         #if there is no file, the fuction will return an empty list

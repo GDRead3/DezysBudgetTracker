@@ -1,9 +1,10 @@
 from operations import view_expenses, add_new_expense, delete_expense
+from storage import save_expenses, load_expenses
 
 def main():
-    expenses = []
+    expenses = load_expenses()
     while True:
-        print("\n1. Add Expense")
+        print("\n1. Quick Add Expense")
         print("2. Expenses Management")
         print("3. Budget Management")
         print("4. Exit")
@@ -15,13 +16,14 @@ def main():
             #if expense is not None, add it to the list
             if expense:
                 expenses.append(expense)
+                save_expenses(expenses)
                 print("Expense added successfully!")
             else:
                 print("Expense addition cancelled.")
         
         elif choice == "2":
             print("\nExpenses Management")
-            print("1. View Expenses")
+            print("1. View Expenses Summary")
             print("2. Delete Expense")
             print("3. Back to Main Menu")
             sub_choice = input("\nChoose an option (1-3): ")
@@ -31,6 +33,7 @@ def main():
             elif sub_choice == "2":
                 expense_index = int(input("Enter the index of the expense to delete: "))
                 delete_expense(expenses, expense_index)
+                save_expenses(expenses)
                 print("Expense deleted successfully!")
             elif sub_choice == "3":
                 break
