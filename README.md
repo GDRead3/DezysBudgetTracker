@@ -67,6 +67,8 @@ The application includes comprehensive error handling for:
 ## To-Do List
 
 - [ ] Add monthly budget setting
+- [ ] Add Storage system for expenses
+- [ ] Add budget managment settings
 - [ ] Implement expense categories management
 - [ ] Add data visualization (graphs/charts)
 - [ ] Create expense reports
