@@ -71,12 +71,13 @@ The application includes comprehensive error handling for:
 ## To-Do List
 
 - [ ] Add monthly budget setting
-- [x] Add Storage system for expenses
+- [x] Add Storage system for expenses (JSON)
+- [ ] Add sorting methods to expense summary managment
 - [ ] Add budget managment settings
+- [ ] Add Status option for quick checking on budget
 - [ ] Implement expense categories management
 - [ ] Add data visualization (graphs/charts)
 - [ ] Create expense reports
-- [ ] Add multi-currency support
 - [ ] Implement user authentication
 - [ ] Create a web interface
 - [ ] Add expense search functionality
