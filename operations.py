@@ -1,4 +1,5 @@
 from expense import Expense
+from storage import save_expenses
 
 def view_expenses(expenses):
     # Check if we have any expenses to show
@@ -27,5 +28,14 @@ def add_new_expense():
 def delete_expense(expenses, expense_index):
     # This just uses our Expense class's from_user_input method
     return expenses.pop(expense_index)
+
+def handle_add_expense(expenses):
+    expense = add_new_expense()
+    if expense:
+        expenses.append(expense)
+        save_expenses(expenses)
+        print("Expense added successfully!")
+    else:
+        print("Expense addition cancelled.")
 
 

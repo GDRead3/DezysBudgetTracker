@@ -1,5 +1,8 @@
-from operations import view_expenses, add_new_expense, delete_expense
+from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense
 from storage import save_expenses, load_expenses
+
+
+
 
 def main():
     expenses = load_expenses()
@@ -12,14 +15,7 @@ def main():
         choice = input("\nChoose an option (1-4): ")
         
         if choice == "1":
-            expense = add_new_expense()
-            #if expense is not None, add it to the list
-            if expense:
-                expenses.append(expense)
-                save_expenses(expenses)
-                print("Expense added successfully!")
-            else:
-                print("Expense addition cancelled.")
+            handle_add_expense(expenses)
         
         elif choice == "2":
             print("\nExpenses Management")
@@ -28,27 +24,18 @@ def main():
             print("3. Delete Expense")
             print("4. Back to Main Menu")
             sub_choice = input("\nChoose an option (1-4): ")
-
-
             
             if sub_choice == "1":
                 view_expenses(expenses)
             elif sub_choice == "2":
-                expense = add_new_expense()
-                #if expense is not None, add it to the list
-                if expense:
-                    expenses.append(expense)
-                    save_expenses(expenses)
-                    print("Expense added successfully!")
-                else:
-                    print("Expense addition cancelled.")
+                handle_add_expense(expenses)
             elif sub_choice == "3":
                 expense_index = int(input("Enter the index of the expense to delete: "))
                 delete_expense(expenses, expense_index)
                 save_expenses(expenses)
                 print("Expense deleted successfully!")
             elif sub_choice == "4":
-                break
+                continue
 
         elif choice == "3":
             print("Budget Management")
