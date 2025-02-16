@@ -43,6 +43,19 @@ def main():
             print("2. View Budget Status")
             print("3. Analyze Expenses")
             print("4. Back to Main Menu")
+            sub_choice = input("\nChoose an option (1-4): ")
+
+            if sub_choice == "1":
+                pass
+            elif sub_choice == "2":
+                pass
+            elif sub_choice == "3":
+                pass
+            elif sub_choice == "4":
+                continue
+
+
+        
             
         
         elif choice == "4":
