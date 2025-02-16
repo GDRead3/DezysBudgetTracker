@@ -1,4 +1,5 @@
 from datetime import datetime
+from validation import validate_date, validate_amount
 
 class Expense:
     def __init__(self, date, amount, category):
