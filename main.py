@@ -1,4 +1,4 @@
-from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense
+from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense, set_budget, view_budget
 from storage import save_expenses, load_expenses
 
 
@@ -46,9 +46,13 @@ def main():
             sub_choice = input("\nChoose an option (1-4): ")
 
             if sub_choice == "1":
-                pass
+                budget = set_budget()
+                # TODO: Add budget storage functionality
+                print(f"Monthly budget set to ${budget:.2f}")
             elif sub_choice == "2":
-                pass
+                # TODO: Add budget loading functionality
+                budget = 0  # Temporary placeholder
+                view_budget(budget)
             elif sub_choice == "3":
                 pass
             elif sub_choice == "4":
