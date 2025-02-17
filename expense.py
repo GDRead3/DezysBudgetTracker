@@ -1,5 +1,5 @@
 from datetime import datetime
-from validation import validate_date, validate_amount
+from validation import validate_amount, validate_date
 
 class Expense:
     def __init__(self, date, amount, category):
@@ -68,28 +68,6 @@ class Expense:
             "category": self.category
         }
     
-
-#ensure date is a valid input
-def validate_date(date_str):
-    try:
-        if date_str:
-            datetime.strptime(date_str, "%Y-%m-%d")
-            return True
-    except ValueError:
-        return False
-    return True  # Empty string is valid (will use today's date)
-
-#ensure amount is a valid input
-def validate_amount(amount_str):
-    try:
-        amount = float(amount_str)
-        if amount <= 0:
-            raise ValueError("Amount must be greater than 0")
-        return amount
-    except ValueError as e:
-        if str(e) == "Amount must be greater than 0":
-            raise
-        raise ValueError("Please enter a valid number")
 
 #test:
 # Example usage:

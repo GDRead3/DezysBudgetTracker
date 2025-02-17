@@ -1,4 +1,4 @@
-from expense import validate_amount
+from validation import validate_amount
 
 class Budget:
     def __init__(self, amount):
