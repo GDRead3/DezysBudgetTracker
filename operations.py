@@ -1,6 +1,8 @@
 from expense import Expense
 from storage import save_expenses
 
+
+## Expenses --------------------------------------------------------------------------------------------------------------------------
 def view_expenses(expenses):
     # Check if we have any expenses to show
     if not expenses:
@@ -38,4 +40,16 @@ def handle_add_expense(expenses):
     else:
         print("Expense addition cancelled.")
 
+##-------------------------------------------------------------------------------------------------------------------------------------
 
+## Budget -----------------------------------------------------------------------------------------------------------------------------
+def view_budget(budget):
+    pass
+
+def set_budget():
+    pass
+
+def remove_budget(budget):
+    pass
+
+## -------------------------------------------------------------------------------------------------------------------------------------
