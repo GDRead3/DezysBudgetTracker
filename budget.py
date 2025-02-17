@@ -35,3 +35,11 @@ class Budget:
                 retry = input("Would you like to try again? (y/n): ")
                 if retry.lower() != 'y':
                     return None
+                
+
+#Sub Budget-----------------------------------------------------------------------------------------------------------
+
+class Sub_budget(Budget):
+    def __init__(self, amount, categeory):
+        super().__init__(amount, categeory)
+        self.categeory = categeory

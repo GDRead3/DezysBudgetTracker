@@ -44,10 +44,24 @@ def handle_add_expense(expenses):
 
 ## Budget -----------------------------------------------------------------------------------------------------------------------------
 def view_budget(budget):
-    pass
+    #check if there is a budget to show
+    if not budget:
+        print("No budget have been set yet.")
+        return
+    
+    print (f"\nYour Current Budget is: {budget}")
 
 def set_budget():
-    pass
+    while True:
+        try:
+            amount = float(input("Enter your monthly budget amount: $"))
+            if amount <= 0:
+                print("Budget must be greater than zero.")
+                continue
+            return amount
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
 
 def remove_budget(budget):
     pass
