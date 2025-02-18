@@ -1,5 +1,6 @@
 # Personal data files
 expenses.json
+budget.json
 
 # Python cache files
 __pycache__/

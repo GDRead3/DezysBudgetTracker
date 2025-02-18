@@ -1,11 +1,12 @@
 from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense, set_budget, view_budget
-from storage import save_expenses, load_expenses
+from storage import save_expenses, load_expenses, save_budget, load_budget
 
 
 
 
 def main():
     expenses = load_expenses()
+    budget = load_budget()
     while True:
         print("\n1. Quick Add Expense")
         print("2. Expenses Management")
@@ -47,11 +48,13 @@ def main():
 
             if sub_choice == "1":
                 budget = set_budget()
-                # TODO: Add budget storage functionality
-                print(f"Monthly budget set to ${budget:.2f}")
+                if budget:
+                    save_budget(budget.amount)
+                    print(f"Monthly budget set to ${budget.amount:.2f}")
+                else:
+                    print("Budget setting cancelled.")
             elif sub_choice == "2":
-                # TODO: Add budget loading functionality
-                budget = 0  # Temporary placeholder
+                budget = load_budget()
                 view_budget(budget)
             elif sub_choice == "3":
                 pass

@@ -36,6 +36,11 @@ class Budget:
                 if retry.lower() != 'y':
                     return None
                 
+def to_dict(self):
+    return {
+        "amount": self.amount,
+        }
+                
 
 #Sub Budget-----------------------------------------------------------------------------------------------------------
 

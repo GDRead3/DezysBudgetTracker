@@ -32,3 +32,18 @@ def load_expenses(filename="expenses.json"):
     except FileNotFoundError:
         #if there is no file, the fuction will return an empty list
         return []
+    
+
+## --------------------------------------------------------------------------------------------------------
+
+def save_budget(budget, filename="budget.json"):
+    with open(filename, "w") as f:
+        json.dump({"amount": budget}, f, indent=4)
+
+def load_budget(filename="budget.json"):
+    try:
+        with open(filename, "r") as f:
+            budget_data = json.load(f)
+        return budget_data["amount"]
+    except FileNotFoundError:
+        return None

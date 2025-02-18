@@ -1,5 +1,6 @@
 from expense import Expense
 from storage import save_expenses
+from budget import Budget
 
 
 ## Expenses --------------------------------------------------------------------------------------------------------------------------
@@ -49,19 +50,10 @@ def view_budget(budget):
         print("No budget have been set yet.")
         return
     
-    print (f"\nYour Current Budget is: {budget}")
+    print (f"\nYour Current Budget is: ${budget:.2f}")
 
 def set_budget():
-    while True:
-        try:
-            amount = float(input("Enter your monthly budget amount: $"))
-            if amount <= 0:
-                print("Budget must be greater than zero.")
-                continue
-            return amount
-        except ValueError:
-            print("Please enter a valid number.")
-            continue
+    return Budget.from_user_input()
 
 def remove_budget(budget):
     pass
