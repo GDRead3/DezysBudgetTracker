@@ -52,9 +52,11 @@ A Python-based personal finance application that helps users track their expense
 ## Project Structure
 
 ```
-├── expense.py       # Expense class and validation functions
+├── expense.py       # Expense class and its functions
+├── budget.py        # Budget class and its functions
 ├── main.py          # Main application logic
 ├── operations.py    # Additional operations for managing expenses
+├── validation.py    # validation functions for code sanitization and code cleaning
 ├── storage.py       # Storage functions for the program
 ├── README.md        # Project documentation
 ```
@@ -70,7 +72,7 @@ The application includes comprehensive error handling for:
 
 ## To-Do List
 
-- [ ] Add monthly budget setting
+- [x] Add monthly budget setting
 - [x] Add Storage system for expenses (JSON)
 - [ ] Add sorting methods to expense summary managment
 - [ ] Add budget managment settings
