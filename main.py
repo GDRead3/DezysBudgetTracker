@@ -1,4 +1,4 @@
-from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense, set_budget, view_budget
+from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense, set_budget, view_budget, analyze_expenses
 from storage import save_expenses, load_expenses, save_budget, load_budget
 
 
@@ -57,7 +57,7 @@ def main():
                 budget = load_budget()
                 view_budget(budget)
             elif sub_choice == "3":
-                pass
+                analyze_expenses(expenses, budget)
             elif sub_choice == "4":
                 continue
 

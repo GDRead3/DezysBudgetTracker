@@ -41,6 +41,35 @@ def handle_add_expense(expenses):
     else:
         print("Expense addition cancelled.")
 
+def analyze_expenses(expenses, budget):
+    if not expenses:
+        print("\nNo expenses to analyze.")
+        return
+
+    # Calculate total expenses and category breakdown
+    total_spent = sum(expense.amount for expense in expenses)
+    categories = {}
+    
+    for expense in expenses:
+        if expense.category not in categories:
+            categories[expense.category] = 0
+        categories[expense.category] += expense.amount
+
+    # Display analysis
+    print("\n=== Expense Analysis ===")
+    print(f"Total Spent: ${total_spent:.2f}")
+    
+    if budget:
+        budget_remaining = budget - total_spent
+        print(f"Monthly Budget: ${budget:.2f}")
+        print(f"Budget Remaining: ${budget_remaining:.2f}")
+        print(f"Budget Status: {'Over budget' if budget_remaining < 0 else 'Under budget'}")
+    
+    print("\nSpending by Category:")
+    for category, amount in categories.items():
+        percentage = (amount / total_spent) * 100
+        print(f"{category}: ${amount:.2f} ({percentage:.1f}%)")
+
 ##-------------------------------------------------------------------------------------------------------------------------------------
 
 ## Budget -----------------------------------------------------------------------------------------------------------------------------
