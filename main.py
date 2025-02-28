@@ -1,5 +1,6 @@
 from operations import view_expenses, add_new_expense, delete_expense, handle_add_expense, set_budget, view_budget, analyze_expenses
 from storage import save_expenses, load_expenses, save_budget, load_budget
+from validation import validate_menu_choice, validate_index, validate_description
 
 
 
