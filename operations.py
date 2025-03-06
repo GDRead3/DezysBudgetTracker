@@ -17,6 +17,7 @@ The module implements:
 All functions include error handling and input validation to ensure data integrity.
 """
 
+#$fe
 ## Expenses --------------------------------------------------------------------------------------------------------------------------
 def view_expenses(expenses):
     """
