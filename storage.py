@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from expense import Expense
+from budget import Budget
 
 #saving a list of expense objects to a JSON file
 def save_expenses(expenses, filename="expenses.json"):
@@ -37,13 +38,24 @@ def load_expenses(filename="expenses.json"):
 ## --------------------------------------------------------------------------------------------------------
 
 def save_budget(budget, filename="budget.json"):
+    """
+    Save budget object to JSON file.
+    """
+    if isinstance(budget, Budget):
+        budget_data = budget.to_dict()
+    else:
+        budget_data = {"amount": float(budget), "categories": {}}
+        
     with open(filename, "w") as f:
-        json.dump({"amount": budget}, f, indent=4)
+        json.dump(budget_data, f, indent=4)
 
 def load_budget(filename="budget.json"):
+    """
+    Load budget from JSON file.
+    """
     try:
         with open(filename, "r") as f:
             budget_data = json.load(f)
-        return budget_data["amount"]
+        return Budget.from_dict(budget_data)
     except FileNotFoundError:
         return None

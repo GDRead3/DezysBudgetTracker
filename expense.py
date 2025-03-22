@@ -2,13 +2,20 @@ from datetime import datetime
 from validation import validate_amount, validate_date
 
 class Expense:
-    def __init__(self, date, amount, category):
-        #constructor for new expenses
-        self.date = date            #when the expense occurs
-        self.amount = amount        #how much the expense is
-        self.category = category    #What category the expense is apart of
-    
-    
+    def __init__(self, date, amount, category, description):
+        """
+        Initialize an Expense object.
+        
+        Args:
+            date (str): The date of the expense
+            amount (float): The amount of the expense
+            category (str): The category of the expense (e.g., food, transport, bills)
+            description (str): A detailed description of the expense
+        """
+        self.date = date
+        self.amount = float(amount)  # Ensure amount is float
+        self.category = category
+        self.description = description
 
     @classmethod
     def from_user_input(cls):
@@ -23,7 +30,8 @@ class Expense:
             >>> expense = Expense.from_user_input()
             Enter date (YYYY-MM-DD) or press enter for today: 2024-03-20
             Enter Amount of the Expense: 42.50
-            Enter the category (ie. food, transport, bills, etc): food
+            Enter the category (e.g., food, transport, bills): food
+            Enter a description of the expense: Lunch at the local cafe
         """
         while True:
             try:
@@ -46,12 +54,17 @@ class Expense:
                         print(f"Error: {str(e)}")
                 
                 # Category input and validation
-                category = input("Enter the category (ie. food, transport, bills, etc): ").strip()
+                category = input("Enter the category (e.g., food, transport, bills): ").strip()
                 if not category:
                     raise ValueError("Category cannot be empty")
                 
+                # Description input and validation
+                description = input("Enter a description of the expense: ").strip()
+                if not description:
+                    raise ValueError("Description cannot be empty")
+                
                 # Create and return the new expense object
-                return cls(date, amount, category)
+                return cls(date, amount, category, description)
                 
             except ValueError as e:
                 print(f"Error: {str(e)}")
@@ -60,17 +73,42 @@ class Expense:
                 if retry.lower() != 'y':
                     return None
         
-    #convert the expense into a Dictionary for database
+    @classmethod
+    def from_dict(cls, data):
+        """
+        Create an Expense object from a dictionary.
+        
+        Args:
+            data (dict): Dictionary containing expense data
+            
+        Returns:
+            Expense: A new Expense object
+        """
+        return cls(
+            date=data['date'],
+            amount=data['amount'],
+            category=data['category'],
+            description=data['description']
+        )
+
     def to_dict(self):
+        """
+        Convert the expense to a dictionary for JSON storage.
+        
+        Returns:
+            dict: Dictionary representation of the expense
+        """
         return {
             "date": self.date,
             "amount": self.amount,
-            "category": self.category
+            "category": self.category,
+            "description": self.description
         }
     
 
 #test:
 # Example usage:
-#expense_test = expense("2025-02-08", 25.50, "food")
+#expense_test = expense("2025-02-08", 25.50, "food", "Lunch at the local cafe")
 #print(expense_test.amount)  # Prints: 25.50
 #print(expense_test.category)  # Prints: food
+#print(expense_test.description)  # Prints: Lunch at the local cafe

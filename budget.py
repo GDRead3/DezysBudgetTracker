@@ -1,8 +1,34 @@
 from validation import validate_amount
 
 class Budget:
+    """
+    Represents a budget with amount and future extensibility for sub-budgets.
+    
+    Attributes:
+        amount (float): The total budget amount
+        categories (dict): Dictionary to store category-specific sub-budgets
+    """
     def __init__(self, amount):
-        self.amount = amount
+        self.amount = float(amount)
+        self.categories = {}  # Prepare for future category budgets
+    
+    def to_dict(self):
+        """
+        Convert the budget to a dictionary for storage.
+        """
+        return {
+            "amount": self.amount,
+            "categories": self.categories
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """
+        Create a Budget object from dictionary data.
+        """
+        budget = cls(data["amount"])
+        budget.categories = data.get("categories", {})
+        return budget
 
     @classmethod
     def from_user_input(cls):
@@ -36,15 +62,10 @@ class Budget:
                 if retry.lower() != 'y':
                     return None
                 
-def to_dict(self):
-    return {
-        "amount": self.amount,
-        }
-                
 
 #Sub Budget-----------------------------------------------------------------------------------------------------------
 
-class Sub_budget(Budget):
-    def __init__(self, amount, categeory):
-        super().__init__(amount, categeory)
-        self.categeory = categeory
+class SubBudget(Budget):  # Fixed class name to follow Python naming conventions
+    def __init__(self, amount, category):
+        super().__init__(amount)
+        self.category = category

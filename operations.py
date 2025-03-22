@@ -27,6 +27,7 @@ def view_expenses(expenses):
     This function formats and displays a table of all expenses, including:
     - Index number for reference
     - Date of the expense
+    - Category of the expense
     - Description of the expense
     - Amount spent
     It also calculates and displays the total amount spent.
@@ -39,18 +40,20 @@ def view_expenses(expenses):
         return
     
     print("\n--- Expenses Summary ---")
-    print("Index | Date       | Description                | Amount")
-    print("-" * 60)
+    print("Index | Date       | Category    | Description                | Amount")
+    print("-" * 75)
     
     total = 0
     for i, expense in enumerate(expenses):
-        print(f"{i:<6}| {expense.date} | {expense.description:<25} | ${expense.amount:.2f}")
-        total += expense.amount
+        # Convert amount to float if it's a string
+        amount = float(expense.amount) if isinstance(expense.amount, str) else expense.amount
+        print(f"{i:<6}| {expense.date} | {expense.category:<10} | {expense.description:<25} | ${amount:.2f}")
+        total += amount
     
-    print("-" * 60)
+    print("-" * 75)
     print(f"Total Expenses: ${total:.2f}")
 
-def add_new_expense(date_str, description, amount):
+def add_new_expense(date_str, amount, category, description):
     """
     Create a new Expense object with the given details.
     
@@ -59,8 +62,9 @@ def add_new_expense(date_str, description, amount):
     
     Args:
         date_str (str): Date of the expense in YYYY-MM-DD format
-        description (str): Description of the expense
         amount (float): Amount of the expense
+        category (str): Category of the expense
+        description (str): Detailed description of the expense
         
     Returns:
         Expense: The created Expense object
@@ -69,7 +73,7 @@ def add_new_expense(date_str, description, amount):
     if not date_str:
         date_str = datetime.now().strftime("%Y-%m-%d")
     
-    return Expense(date_str, description, amount)
+    return Expense(date_str, amount, category, description)
 
 def delete_expense(expenses, index):
     """
@@ -90,7 +94,7 @@ def handle_add_expense(expenses):
     Handle the process of adding a new expense with validation.
     
     This function:
-    1. Prompts the user for expense details (date, description, amount)
+    1. Prompts the user for expense details (date, amount, category, description)
     2. Validates each input using appropriate validation functions
     3. Creates a new expense and adds it to the list
     4. Saves the updated expenses list
@@ -110,15 +114,6 @@ def handle_add_expense(expenses):
             break
         print("Invalid date format. Please use YYYY-MM-DD format.")
     
-    # Get and validate description
-    while True:
-        try:
-            description = input("Enter expense description: ")
-            description = validate_description(description)
-            break
-        except ValueError as e:
-            print(f"Error: {e}")
-    
     # Get and validate amount
     while True:
         try:
@@ -128,8 +123,28 @@ def handle_add_expense(expenses):
         except ValueError as e:
             print(f"Error: {e}")
     
+    # Get and validate category
+    while True:
+        try:
+            category = input("Enter expense category (e.g., food, transport, bills): ")
+            if not category.strip():
+                raise ValueError("Category cannot be empty")
+            break
+        except ValueError as e:
+            print(f"Error: {e}")
+    
+    # Get and validate description
+    while True:
+        try:
+            description = input("Enter expense description: ")
+            if not description.strip():
+                raise ValueError("Description cannot be empty")
+            break
+        except ValueError as e:
+            print(f"Error: {e}")
+    
     # Add the expense
-    expense = add_new_expense(date_str, description, amount)
+    expense = add_new_expense(date_str, amount, category, description)
     expenses.append(expense)
     save_expenses(expenses)
     print("Expense added successfully!")
@@ -180,7 +195,7 @@ def analyze_expenses(expenses, budget):
     print(f"Date with highest expenses: {highest_date} (${highest_amount:.2f})")
     
     # Budget comparison
-    if budget and budget.amount > 0:
+    if budget and isinstance(budget, Budget) and budget.amount > 0:
         remaining = budget.amount - total
         percentage = (total / budget.amount) * 100
         
@@ -205,11 +220,17 @@ def view_budget(budget):
     Args:
         budget (Budget): The Budget object
     """
-    if not budget or budget.amount <= 0:
+    if not budget or not isinstance(budget, Budget):
         print("No budget has been set.")
         return
     
     print(f"\nCurrent monthly budget: ${budget.amount:.2f}")
+    
+    # Add display of category budgets for future use
+    if budget.categories:
+        print("\nCategory Budgets:")
+        for category, amount in budget.categories.items():
+            print(f"{category}: ${amount:.2f}")
 
 def set_budget():
     """

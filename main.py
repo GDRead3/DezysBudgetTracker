@@ -100,10 +100,9 @@ def main():
 
             if sub_choice == "1":
                 try:
-                    # Set budget with validation
                     budget = set_budget()
                     if budget:
-                        save_budget(budget.amount)
+                        save_budget(budget)
                         print(f"Monthly budget set to ${budget.amount:.2f}")
                     else:
                         print("Budget setting cancelled.")
