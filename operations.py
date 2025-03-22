@@ -1,5 +1,6 @@
 from datetime import datetime
-from models import Expense, Budget
+from expense import Expense
+from budget import Budget
 from storage import save_expenses
 from validation import validate_date, validate_amount, validate_description, validate_budget_amount
 
