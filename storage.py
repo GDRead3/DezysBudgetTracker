@@ -24,7 +24,8 @@ def load_expenses(filename="expenses.json"):
             expense = Expense(
                 date = expense_dict["date"],
                 amount = expense_dict["amount"],
-                category = expense_dict["category"]
+                category = expense_dict["category"],
+                description = expense_dict["description"]
             )
             expenses.append(expense)
         

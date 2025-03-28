@@ -47,7 +47,7 @@ def view_expenses(expenses):
     for i, expense in enumerate(expenses):
         # Convert amount to float if it's a string
         amount = float(expense.amount) if isinstance(expense.amount, str) else expense.amount
-        print(f"{i:<6}| {expense.date} | {expense.category:<10} | {expense.description:<25} | ${amount:.2f}")
+        print(f"{i:<6}| {expense.date} | {expense.category:<10}  | {expense.description:<25}  | ${amount:.2f}")
         total += amount
     
     print("-" * 75)
