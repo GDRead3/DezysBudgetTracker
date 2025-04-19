@@ -2,7 +2,7 @@ from validation import validate_amount
 
 class Budget:
     """
-    Represents a budget with amount and future extensibility for sub-budgets.
+    Represents a budget with overall amount and category-specific sub-budgets.
     
     Attributes:
         amount (float): The total budget amount
@@ -10,7 +10,38 @@ class Budget:
     """
     def __init__(self, amount):
         self.amount = float(amount)
-        self.categories = {}  # Prepare for future category budgets
+        self.categories = {}  # Format: {category: amount}
+    
+    def set_category_budget(self, category, amount):
+        """
+        Set a budget for a specific category.
+        
+        Args:
+            category (str): The expense category
+            amount (float): The budget amount for this category
+        """
+        self.categories[category] = float(amount)
+    
+    def get_category_budget(self, category):
+        """
+        Get the budget for a specific category.
+        
+        Args:
+            category (str): The expense category
+            
+        Returns:
+            float: The budget amount for the category, or 0 if not set
+        """
+        return self.categories.get(category, 0)
+    
+    def get_total_category_budgets(self):
+        """
+        Calculate the total of all category budgets.
+        
+        Returns:
+            float: Sum of all category budgets
+        """
+        return sum(self.categories.values())
     
     def to_dict(self):
         """
@@ -42,26 +73,37 @@ class Budget:
         """
         while True:
             try:
-                # Amount input with retry loop
+                # Get overall budget
+                amount_str = input("Enter overall monthly budget amount: $")
+                amount = validate_amount(amount_str)
+                budget = cls(amount)
+                
+                # Ask for category budgets
                 while True:
+                    add_category = input("\nWould you like to set a category budget? (y/n): ").lower()
+                    if add_category != 'y':
+                        break
+                    
+                    category = input("Enter category name (e.g., food, transport): ").strip()
+                    if not category:
+                        print("Category name cannot be empty.")
+                        continue
+                    
+                    amount_str = input(f"Enter budget amount for {category}: $")
                     try:
-                        amount_str = input("Enter Amount for the Budget: ")
                         amount = validate_amount(amount_str)
-                        break  # Exit the amount input loop if successful
+                        budget.set_category_budget(category, amount)
                     except ValueError as e:
-                        print(f"Error: {str(e)}")
+                        print(f"Error: {e}")
+                        continue
                 
-                
-                # Create and return the new budget object
-                return cls(amount)
+                return budget
                 
             except ValueError as e:
-                print(f"Error: {str(e)}")
-                # Allow user to retry or cancel
+                print(f"Error: {e}")
                 retry = input("Would you like to try again? (y/n): ")
                 if retry.lower() != 'y':
                     return None
-                
 
 #Sub Budget-----------------------------------------------------------------------------------------------------------
 
