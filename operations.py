@@ -153,20 +153,7 @@ def handle_add_expense(expenses):
 
 def analyze_expenses(expenses, budget):
     """
-    Analyze expenses and provide insights.
-    
-    This function analyzes the expense data and provides useful insights:
-    1. Total amount spent
-    2. Number of expenses recorded
-    3. Average expense amount
-    4. Date with the highest expenses
-    5. Budget comparison (if a budget is set)
-    
-    The function includes warnings for budget overruns or high usage.
-    
-    Args:
-        expenses (list): List of Expense objects
-        budget (Budget): The Budget object
+    Analyze expenses and provide insights including category-specific analysis.
     """
     if not expenses:
         print("No expenses to analyze.")
@@ -175,39 +162,42 @@ def analyze_expenses(expenses, budget):
     # Calculate total expenses
     total = sum(expense.amount for expense in expenses)
     
-    # Group expenses by date
-    expenses_by_date = {}
+    # Group expenses by category
+    expenses_by_category = {}
     for expense in expenses:
-        if expense.date in expenses_by_date:
-            expenses_by_date[expense.date] += expense.amount
+        if expense.category in expenses_by_category:
+            expenses_by_category[expense.category] += expense.amount
         else:
-            expenses_by_date[expense.date] = expense.amount
-    
-    # Find date with highest expenses
-    highest_date = max(expenses_by_date, key=expenses_by_date.get)
-    highest_amount = expenses_by_date[highest_date]
-    
-    # Calculate average expense
-    average = total / len(expenses)
+            expenses_by_category[expense.category] = expense.amount
     
     print("\n--- Expense Analysis ---")
     print(f"Total expenses: ${total:.2f}")
     print(f"Number of expenses: {len(expenses)}")
-    print(f"Average expense: ${average:.2f}")
-    print(f"Date with highest expenses: {highest_date} (${highest_amount:.2f})")
+    print(f"Average expense: ${total/len(expenses):.2f}")
     
-    # Budget comparison
-    if budget and isinstance(budget, Budget) and budget.amount > 0:
+    # Category analysis
+    print("\nExpenses by Category:")
+    print("Category          | Spent        | Budget        | Remaining")
+    print("-" * 65)
+    
+    for category, spent in expenses_by_category.items():
+        category_budget = budget.get_category_budget(category) if budget else 0
+        remaining = category_budget - spent if category_budget > 0 else 0
+        print(f"{category:<15} | ${spent:>10.2f} | ${category_budget:>10.2f} | ${remaining:>10.2f}")
+    
+    # Overall budget analysis
+    if budget and isinstance(budget, Budget):
         remaining = budget.amount - total
         percentage = (total / budget.amount) * 100
         
-        print(f"\nBudget status: ${remaining:.2f} remaining")
+        print("\nOverall Budget Status:")
+        print(f"Budget remaining: ${remaining:.2f}")
         print(f"Budget usage: {percentage:.1f}%")
         
         if remaining < 0:
-            print("Warning: You have exceeded your budget!")
+            print("Warning: You have exceeded your overall budget!")
         elif percentage > 80:
-            print("Warning: You have used more than 80% of your budget!")
+            print("Warning: You have used more than 80% of your overall budget!")
 
 ##-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -226,13 +216,20 @@ def view_budget(budget):
         print("No budget has been set.")
         return
     
-    print(f"\nCurrent monthly budget: ${budget.amount:.2f}")
+    print("\n--- Budget Status ---")
+    print(f"Overall monthly budget: ${budget.amount:.2f}")
     
-    # Add display of category budgets for future use
     if budget.categories:
         print("\nCategory Budgets:")
+        print("Category          | Budget Amount")
+        print("-" * 35)
         for category, amount in budget.categories.items():
-            print(f"{category}: ${amount:.2f}")
+            print(f"{category:<15} | ${amount:.2f}")
+        
+        total_categories = budget.get_total_category_budgets()
+        print("-" * 35)
+        print(f"Total category budgets: ${total_categories:.2f}")
+        print(f"Remaining for other categories: ${budget.amount - total_categories:.2f}")
 
 def set_budget():
     """
