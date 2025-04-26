@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from expense import Expense
 from budget import Budget
+from income import Income
 
 #saving a list of expense objects to a JSON file
 def save_expenses(expenses, filename="expenses.json"):
@@ -36,7 +37,7 @@ def load_expenses(filename="expenses.json"):
         return []
     
 
-## --------------------------------------------------------------------------------------------------------
+## Budgets--------------------------------------------------------------------------------------------------------
 
 def save_budget(budget, filename="budget.json"):
     """
@@ -60,3 +61,48 @@ def load_budget(filename="budget.json"):
         return Budget.from_dict(budget_data)
     except FileNotFoundError:
         return None
+
+## Income--------------------------------------------------------------------------------------------------------
+
+def save_incomes(incomes, filename="incomes.json"):
+    """
+    Save a list of income objects to a JSON file.
+    
+    Args:
+        incomes (list): List of Income objects
+        filename (str): Name of the file to save to
+    """
+    income_data = [income.to_dict() for income in incomes]
+    
+    with open(filename, "w") as f:
+        json.dump(income_data, f, indent=4)
+
+def load_incomes(filename="incomes.json"):
+    """
+    Load incomes from JSON file.
+    
+    Args:
+        filename (str): Name of the file to load from
+        
+    Returns:
+        list: List of Income objects
+    """
+    try:
+        with open(filename, "r") as f:
+            incomes_data = json.load(f)
+            
+        incomes = []
+        for income_dict in incomes_data:
+            income = Income(
+                date=income_dict["date"],
+                amount=income_dict["amount"],
+                category=income_dict["category"],
+                description=income_dict["description"]
+            )
+            incomes.append(income)
+        
+        return incomes
+    
+    except FileNotFoundError:
+        # If there is no file, the function will return an empty list
+        return []

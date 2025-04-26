@@ -1,11 +1,14 @@
 # Dezy's Budget Tracker
 
-A Python-based personal finance application that helps users track their expenses and manage their budget effectively.
+A Python-based personal finance application that helps users track their expenses, income, and manage their budget effectively.
 
 ## Features
 
 - Add daily expenses with dates, amounts, and categories
-- View expense history
+- Track income sources with dates, amounts, and categories
+- View expense and income history
+- Calculate net income (income - expenses)
+- Comprehensive financial analysis
 - Input validation and error handling
 - Data persistence through JSON storage
 - User-friendly command-line interface
@@ -45,7 +48,11 @@ A Python-based personal finance application that helps users track their expense
    - Add new expenses
    - View existing expenses
    - Delete expenses
-   - enter budget management
+   - Add new income
+   - View income history
+   - Delete income entries
+   - Manage budget
+   - View financial analysis
    - Exit the application
    and more...
 
@@ -53,9 +60,10 @@ A Python-based personal finance application that helps users track their expense
 
 ```
 ├── expense.py       # Expense class and its functions
+├── income.py        # Income class and its functions
 ├── budget.py        # Budget class and its functions
 ├── main.py          # Main application logic
-├── operations.py    # Additional operations for managing expenses
+├── operations.py    # Additional operations for managing expenses and income
 ├── validation.py    # validation functions for code sanitization and code cleaning
 ├── storage.py       # Storage functions for the program
 ├── README.md        # Project documentation
@@ -74,8 +82,10 @@ The application includes comprehensive error handling for:
 
 - [x] Add monthly budget setting
 - [x] Add Storage system for expenses (JSON)
-- [ ] Add sorting methods to expense summary managment
-- [ ] Add budget managment settings
+- [x] Add income tracking and management
+- [x] Add financial analysis (income vs expenses)
+- [ ] Add sorting methods to expense summary management
+- [ ] Add budget management settings
 - [ ] Add Status option for quick checking on budget
 - [ ] Implement expense categories management
 - [ ] Add data visualization (graphs/charts)

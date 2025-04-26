@@ -1,17 +1,19 @@
 from datetime import datetime
 from expense import Expense
 from budget import Budget
-from storage import save_expenses
-from validation import validate_date, validate_amount, validate_description, validate_budget_amount
+from income import Income
+from storage import save_expenses, save_incomes
+from validation import validate_date, validate_amount, validate_description, validate_budget_amount, validate_index
 
 """
 Dezy's Budget Tracker - Operations Module
 
 This module contains the core functionality for the budget tracking application.
-It provides functions for managing expenses and budget operations.
+It provides functions for managing expenses, income, and budget operations.
 
 The module implements:
 - Expense management (view, add, delete, analyze)
+- Income management (view, add, delete)
 - Budget management (set, view)
 - Input validation for all operations
 
@@ -269,3 +271,186 @@ def remove_budget(budget):
     pass
 
 ## -------------------------------------------------------------------------------------------------------------------------------------
+
+## Income --------------------------------------------------------------------------------------------------------------------------
+def view_incomes(incomes):
+    """
+    Display all incomes with their details.
+    
+    This function formats and displays a table of all incomes, including:
+    - Index number for reference
+    - Date of the income
+    - Category of the income
+    - Description of the income
+    - Amount received
+    It also calculates and displays the total amount received.
+    
+    Args:
+        incomes (list): List of Income objects
+    """
+    if not incomes:
+        print("No incomes recorded yet.")
+        return
+    
+    print("\n--- Income Summary ---")
+    print("Index | Date       | Category    | Description                | Amount")
+    print("-" * 75)
+    
+    total = 0
+    for i, income in enumerate(incomes):
+        # Convert amount to float if it's a string
+        amount = float(income.amount) if isinstance(income.amount, str) else income.amount
+        print(f"{i:<6}| {income.date} | {income.category:<10}  | {income.description:<25}  | ${amount:.2f}")
+        total += amount
+    
+    print("-" * 75)
+    print(f"Total Income: ${total:.2f}")
+
+def add_new_income(date_str, amount, category, description):
+    """
+    Create a new income entry.
+    
+    Args:
+        date_str (str): Date of the income in YYYY-MM-DD format
+        amount (float): Amount of the income
+        category (str): Category of the income
+        description (str): Description of the income
+        
+    Returns:
+        Income: A new Income object
+    """
+    return Income(date_str, amount, category, description)
+
+def delete_income(incomes, index):
+    """
+    Delete an income entry by index.
+    
+    Args:
+        incomes (list): List of Income objects
+        index (int): Index of the income to delete
+    """
+    if 0 <= index < len(incomes):
+        del incomes[index]
+    else:
+        raise ValueError("Invalid income index")
+
+def handle_add_income(incomes):
+    """
+    Handle the process of adding a new income entry.
+    
+    This function:
+    1. Prompts the user for income details
+    2. Validates the input
+    3. Creates a new Income object
+    4. Adds it to the list of incomes
+    5. Saves the updated list to storage
+    
+    Args:
+        incomes (list): List of Income objects
+    """
+    print("\n--- Add New Income ---")
+    
+    # Create a new income object through user input
+    new_income = Income.from_user_input()
+    
+    if new_income:
+        # Add the new income to the list
+        incomes.append(new_income)
+        
+        # Save the updated list
+        save_incomes(incomes)
+        
+        print(f"Income of ${new_income.amount:.2f} added successfully!")
+    else:
+        print("Income addition cancelled.")
+
+def analyze_finances(incomes, expenses, budget):
+    """
+    Analyze finances by comparing income, expenses, and budget.
+    
+    This function:
+    1. Calculates total income
+    2. Calculates total expenses
+    3. Calculates net income (income - expenses)
+    4. Compares expenses to budget
+    5. Provides financial insights
+    
+    Args:
+        incomes (list): List of Income objects
+        expenses (list): List of Expense objects
+        budget (Budget): Budget object
+    """
+    if not incomes and not expenses:
+        print("No financial data to analyze.")
+        return
+    
+    # Calculate totals
+    total_income = sum(float(income.amount) for income in incomes)
+    total_expenses = sum(float(expense.amount) for expense in expenses)
+    net_income = total_income - total_expenses
+    
+    # Display financial summary
+    print("\n--- Financial Summary ---")
+    print(f"Total Income: ${total_income:.2f}")
+    print(f"Total Expenses: ${total_expenses:.2f}")
+    print(f"Net Income: ${net_income:.2f}")
+    
+    # Compare to budget if available
+    if budget:
+        print(f"Monthly Budget: ${budget.amount:.2f}")
+        remaining_budget = budget.amount - total_expenses
+        
+        if remaining_budget >= 0:
+            print(f"Remaining Budget: ${remaining_budget:.2f}")
+        else:
+            print(f"Budget Exceeded by: ${abs(remaining_budget):.2f}")
+        
+        # Calculate percentage of budget used
+        if budget.amount > 0:
+            percentage_used = (total_expenses / budget.amount) * 100
+            print(f"Percentage of Budget Used: {percentage_used:.1f}%")
+    
+    # Provide financial insights
+    print("\n--- Financial Insights ---")
+    
+    if net_income > 0:
+        print("You have a positive net income. Good job!")
+    elif net_income < 0:
+        print("You have a negative net income. Consider reducing expenses or increasing income.")
+    else:
+        print("Your income equals your expenses. Consider saving more.")
+    
+    if budget and total_expenses > budget.amount:
+        print("You've exceeded your budget. Consider reducing expenses.")
+    
+    # Analyze income categories
+    if incomes:
+        print("\n--- Income by Category ---")
+        income_by_category = {}
+        for income in incomes:
+            category = income.category
+            amount = float(income.amount)
+            if category in income_by_category:
+                income_by_category[category] += amount
+            else:
+                income_by_category[category] = amount
+        
+        for category, amount in income_by_category.items():
+            percentage = (amount / total_income) * 100
+            print(f"{category}: ${amount:.2f} ({percentage:.1f}%)")
+    
+    # Analyze expense categories
+    if expenses:
+        print("\n--- Expenses by Category ---")
+        expenses_by_category = {}
+        for expense in expenses:
+            category = expense.category
+            amount = float(expense.amount)
+            if category in expenses_by_category:
+                expenses_by_category[category] += amount
+            else:
+                expenses_by_category[category] = amount
+        
+        for category, amount in expenses_by_category.items():
+            percentage = (amount / total_expenses) * 100
+            print(f"{category}: ${amount:.2f} ({percentage:.1f}%)")
